@@ -74,6 +74,13 @@ games8Btn.pack()
 games10Btn.pack()
 
 #Game Screen
+GameScreen = Frame(root)
+GameScreen.grid(row=0, column=0, columnspan=2, rowspan=2, sticky=E)
+ButtonTest = Button(GameScreen, text="Test")
+ButtonTest.grid(row=0, column=0)
+ButtonTest2 = Button(GameScreen, text="Test2")
+ButtonTest2.grid(row=0, column=1)
+
 
 
 
