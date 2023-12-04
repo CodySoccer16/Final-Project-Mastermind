@@ -1,3 +1,4 @@
+
 import tkinter as tk
 from tkinter import *
 
@@ -23,7 +24,7 @@ def btn_player_2():
 def btn_games_2():
     games = 2
     GameAmountScreen.pack_forget()
-    GameScreen.pack()
+    #GameScreen.pack()
     return games
 def btn_games_4():
     games = 4
@@ -74,12 +75,11 @@ games8Btn.pack()
 games10Btn.pack()
 
 #Game Screen
-GameScreen = Frame(root)
-GameScreen.grid(row=0, column=0, columnspan=2, rowspan=2, sticky=E)
-ButtonTest = Button(GameScreen, text="Test")
-ButtonTest.grid(row=0, column=0)
-ButtonTest2 = Button(GameScreen, text="Test2")
-ButtonTest2.grid(row=0, column=1)
+GameScreen = Frame(root, width=500, height=500)
+ButtonTest = Label(GameScreen, text="Test",bg= "Grey", height=10, width=10)
+ButtonTest.place(x=0,y=0)
+ButtonTest2 = Label(GameScreen, text="Test2", bg = "blue", height=10, width=10)
+ButtonTest2.place(x=100,y=100)
 
 
 
