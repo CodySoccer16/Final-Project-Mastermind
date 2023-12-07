@@ -92,6 +92,12 @@ for i in range(4):
     answerBoardList.append(Label(GameScreen, bg= "Dark Grey", height=3, width=6, borderwidth=2))
     answerBoardList[i].place(x=40+(60*i),y=600)
 
+guessReturn = []
+for i in range(10):
+    for j in range(4):
+        guessReturn.append(Label(GameScreen, bg= "Dark Grey", height=1, width=2))
+        guessReturn[i*4+j].place(x=200+(25*j),y=40+(55*i))
+
 #cover
 cover = Label(GameScreen, bg= "Black", height=4, width=34, borderwidth=8)
 #cover.place(x=28,y=590)
@@ -208,7 +214,7 @@ def btn_black():
 def btn_delete():
     global playerTurn, currentBox, currentAnswer, minRange, maxRange
     if playerTurn % 2 == 0:
-        if currentAnswer > 0 and currentAnswer-1 > minRange and currentAnswer < maxRange:
+        if currentAnswer > 0 and currentAnswer-1 > minRange and currentAnswer-1 < maxRange:
             currentAnswer -= 1
             answerBoardList[currentAnswer].config(bg="Dark Grey")
     else:
@@ -220,9 +226,13 @@ answerColors = []
 def btn_enter():
     global playerTurn, currentBox, currentAnswer, minRange, maxRange
     if playerTurn % 2 == 0:
-        for i in range(4):
-            answerColors.append(answerBoardList[i].cget("bg"))
-        playerTurn += 1
+        if currentAnswer == 4:
+            for i in range(4):
+                answerColors.append(answerBoardList[i].cget("bg"))
+            #print(answerColors)
+            playerTurn += 1
+        else:
+            print("Not Enough Colors")
         cover.place(x=28,y=590)
     else:
         winCheck()
@@ -235,7 +245,8 @@ def winCheck():
     totalCorrect = 0
     totalClose = 0
     if timesChecked == 0:
-        for i in range(minRange, maxRange):
+        for i in range(minRange+1, maxRange):
+            print(gameboardList[i].cget("bg"), answerBoardList[i].cget("bg"))
             if gameboardList[i].cget("bg") == answerBoardList[i].cget("bg"):
                 totalCorrect += 1
             else:
@@ -243,16 +254,14 @@ def winCheck():
                         totalClose += 1
         timesChecked += 1
     else:
-        for i in range(minRange, maxRange):
-            if i - minRange < len(answerBoardList):
-                if gameboardList[i+1].cget("bg") == answerBoardList[i - minRange].cget("bg"):
-                    totalCorrect += 1
-                else:
-                    if gameboardList[i].cget("bg") in answerColors:
-                            totalClose += 1
-    totalClose -= totalCorrect
-    if totalClose < 0:
-        totalClose = 0
+        for i in range(minRange+1, maxRange):
+            #print(gameboardList[i].cget("bg"), answerBoardList[i - (4 * timesChecked)].cget("bg"))
+            if gameboardList[i].cget("bg") == answerBoardList[i - (4 * timesChecked)].cget("bg"):
+                totalCorrect += 1
+            else:
+                if gameboardList[i].cget("bg") in answerColors:
+                        totalClose += 1
+        timesChecked += 1
     print(totalCorrect, totalClose)
 
 
