@@ -49,13 +49,17 @@ def btn_games_10():
 
 
 # Start Screen
-startScreen = Frame(root)
-title = Label(startScreen, text="Mastermind")
-title.pack()
-player1Btn = Button(startScreen, text="1 Player", command=btn_player_1)
-player2Btn = Button(startScreen, text="2 Player", command=btn_player_2)
-player1Btn.pack()
-player2Btn.pack()
+startScreen = Frame(root,bg="Light Blue")
+startScreen.pack(fill="both", expand=True)
+title = Label(startScreen, text="𝕸𝖆𝖘𝖙𝖊𝖗𝖒𝖎𝖓𝖉", font=("Gungsuche",100),bg="Light Blue")
+title.pack(pady=20)
+
+player1Btn = Button(startScreen, text="① Player",font=("Helvetica",50),bg = "Lime", command=btn_player_1)
+player2Btn = Button(startScreen, text="② Player",font=("Helvetica",50),bg="Lime", command=btn_player_2)
+player1Btn.pack(pady=40)
+player2Btn.pack(pady=40)
+
+  
 
 #Game Amount Screen
 GameAmountScreen = Frame(root)
@@ -78,7 +82,7 @@ games10Btn.pack()
 
 #gameboard
 GameScreen = Frame(root, width=700, height=700)
-gameboard = Label(GameScreen, bg= "Grey", height=42, width=35, borderwidth=8, relief="groove", )
+gameboard = Label(GameScreen, bg= "Grey", height=42, width=40, borderwidth=8, relief="groove", )
 gameboard.place(x=25,y=25)
 gameboardList = []
 for i in range(10):
@@ -93,13 +97,16 @@ for i in range(4):
     answerBoardList[i].place(x=40+(60*i),y=600)
 
 guessReturn = []
+amountPlaced = 0
 for i in range(10):
     for j in range(4):
-        guessReturn.append(Label(GameScreen, bg= "Dark Grey", height=1, width=2))
-        guessReturn[i*4+j].place(x=200+(25*j),y=40+(55*i))
+            guessReturn.append(Label(GameScreen, bg= "Dark Grey", height=1, width=2))
+            guessReturn[i*4+j].place(x=220+(22*j),y=46+(55*i))
+
+
 
 #cover
-cover = Label(GameScreen, bg= "Black", height=4, width=34, borderwidth=8)
+cover = Label(GameScreen, bg= "Black", height=4, width=39, borderwidth=8)
 #cover.place(x=28,y=590)
 
 playerTurn = 0
@@ -246,7 +253,6 @@ def winCheck():
     totalClose = 0
     if timesChecked == 0:
         for i in range(minRange+1, maxRange):
-            print(gameboardList[i].cget("bg"), answerBoardList[i].cget("bg"))
             if gameboardList[i].cget("bg") == answerBoardList[i].cget("bg"):
                 totalCorrect += 1
             else:
@@ -262,30 +268,102 @@ def winCheck():
                 if gameboardList[i].cget("bg") in answerColors:
                         totalClose += 1
         timesChecked += 1
-    print(totalCorrect, totalClose)
 
-
+    if totalCorrect == 4:
+        guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
+        guessReturn[((timesChecked-1) * 4) + 1].config(bg="Red")
+        guessReturn[((timesChecked-1) * 4) + 2].config(bg="Red")
+        guessReturn[((timesChecked-1) * 4) + 3].config(bg="Red")
+ 
+    elif totalCorrect == 3:
+        guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
+        guessReturn[((timesChecked-1) * 4) + 1].config(bg="Red")
+        guessReturn[((timesChecked-1) * 4) + 2].config(bg="Red")
+        guessReturn[((timesChecked-1) * 4) + 3].config(bg="White")
+    elif totalCorrect == 2:
+        if totalClose == 2:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="Red")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="White")
+        elif totalClose == 1:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="Red")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
+        else:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="Red")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="Dark Grey")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
+    elif totalCorrect == 1:
+        if totalClose == 3:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="White")
+        elif totalClose == 2:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
+        elif totalClose == 1:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="Dark Grey")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
+        else:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="Dark Grey")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="Dark Grey")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
+    elif totalCorrect == 0:
+        if totalClose == 4:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="White")
+        elif totalClose == 3:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
+        elif totalClose == 2:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="Dark Grey")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
+        elif totalClose == 1:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="White")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="Dark Grey")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="Dark Grey")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
+        else:
+            guessReturn[((timesChecked-1) * 4) + 0].config(bg="Dark Grey")
+            guessReturn[((timesChecked-1) * 4) + 1].config(bg="Dark Grey")
+            guessReturn[((timesChecked-1) * 4) + 2].config(bg="Dark Grey")
+            guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
 
 
 #keypad
 keyPad = Label(GameScreen , bg="grey",height=20 , width=40 , borderwidth = 5 , relief="groove")
-keyPad.place(x=400 , y=10)
+keyPad.place(x=400 , y=25)
 White = Button(GameScreen, bg= "White",height=6 , width=12, command=btn_white)
-White.place(x=405 ,y= 15)
+White.place(x=405 ,y= 30)
 Blue = Button(GameScreen, bg= "blue",height=6 , width=12, command=btn_blue)
-Blue.place(x=500 ,y= 15)
+Blue.place(x=500 ,y= 30)
 Purple = Button(GameScreen, bg= "purple",height=6 , width=12, command=btn_purple)
-Purple.place(x=595 ,y= 15)
+Purple.place(x=595 ,y= 30)
 Pink = Button(GameScreen, bg= "pink",height=6 , width=12, command=btn_pink)
-Pink.place(x=405 ,y= 115)
+Pink.place(x=405 ,y= 130)
 Orange = Button(GameScreen, bg= "Orange",height=6 , width=12, command=btn_orange)
-Orange.place(x=500 ,y= 115)
+Orange.place(x=500 ,y= 130)
 Orange = Button(GameScreen, bg= "Black",height=6 , width=12, command=btn_black)
-Orange.place(x=595,y= 115)
+Orange.place(x=595,y= 130)
 Enter = Button(GameScreen , bg="Green" , height = 5, width=10,text="Enter", command=btn_enter)
-Enter.place(x=460 , y=230)
+Enter.place(x=460 , y=245)
 Delete= Button(GameScreen, bg= "Red",height=5 , width=10 , text="Delete", command=btn_delete)
-Delete.place(x=560 ,y= 230)
+Delete.place(x=560 ,y= 245)
 
 
 
@@ -300,5 +378,5 @@ Delete.place(x=560 ,y= 230)
 
 
 
-startScreen.pack()
+
 root.mainloop()
