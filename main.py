@@ -8,12 +8,11 @@ root.title("Mastermind")
 root.geometry("700x700")
 
 players = 0
+player1Score = 0
+player2Score = 0
+games = 0
+currentGame = 1
 # button Functions
-def btn_player_1():
-    players = 1
-    startScreen.pack_forget()
-    GameAmountScreen.pack()
-    return players
 def btn_player_2():
     players = 2
     startScreen.pack_forget()
@@ -22,31 +21,29 @@ def btn_player_2():
 
 
 def btn_games_2():
+    global games
     games = 2
     GameAmountScreen.pack_forget()
     GameScreen.pack()
     return games
 def btn_games_4():
+    global games
     games = 4
     GameAmountScreen.pack_forget()
     GameScreen.pack()
     return games
 def btn_games_6():
+    global games
     games = 6
     GameAmountScreen.pack_forget()
     GameScreen.pack()
     return games
 def btn_games_8():
+    global games
     games = 8
     GameAmountScreen.pack_forget()
     GameScreen.pack()
     return games
-def btn_games_10():
-    games = 10
-    GameAmountScreen.pack_forget()
-    GameScreen.pack()
-    return games
-
 
 # Start Screen
 startScreen = Frame(root,bg="Light Blue")
@@ -54,32 +51,32 @@ startScreen.pack(fill="both", expand=True)
 title = Label(startScreen, text="𝕸𝖆𝖘𝖙𝖊𝖗𝖒𝖎𝖓𝖉", font=("Gungsuche",100),bg="Light Blue")
 title.pack(pady=20)
 
-player1Btn = Button(startScreen, text="① Player",font=("Helvetica",50),bg = "Lime", command=btn_player_1)
-player2Btn = Button(startScreen, text="② Player",font=("Helvetica",50),bg="Lime", command=btn_player_2)
-player1Btn.pack(pady=40)
-player2Btn.pack(pady=40)
+player2Btn = Button(startScreen, text="𝓢𝓽𝓪𝓻𝓽",font=("Helvetica",50),bg="Lime", command=btn_player_2)
+player2Btn.pack(pady=120)
 
   
 
 #Game Amount Screen
 GameAmountScreen = Frame(root)
-title = Label(GameAmountScreen, text="How Many Games?")
-Instructions  = Label(GameAmountScreen, text="Instructions Here")
-games2Btn = Button(GameAmountScreen, text="2 Games", command=btn_games_2)
-games4Btn = Button(GameAmountScreen, text="4 Games", command=btn_games_4)
-games6Btn = Button(GameAmountScreen, text="6 Games", command=btn_games_6)
-games8Btn = Button(GameAmountScreen, text="8 Games", command=btn_games_8)
-games10Btn = Button(GameAmountScreen, text="10 Games", command=btn_games_10)
+title = Label(GameAmountScreen, text="𝕴𝖓𝖘𝖙𝖗𝖚𝖈𝖙𝖎𝖔𝖓𝖘",font=("Helvetica",50))
+Instructions  = Label(GameAmountScreen, text="Have the player 1 select a code. Next , have the player 2 place there\n first guess. After each guess the computer will give them feedback.\nThe feedback the computer gives you is very important. It will\n either show a red , white or grey square for each box . Red meaning \nyou have a correct color in the correct spot. White meaning you\n have the correct color in the wrong box. And grey meaning you\n have the wrong color in the wrong spot. Keep in mind the feedack\n order does not corrilate with the game board order. Repeat with\n the next row.Continue until the code is guessed or there are no \nmore guesses left.Switch places and play again.\n Keep in mind there wil be no duplicates in this game.",font=("Helvetica",15))
+numOfGames = Label(GameAmountScreen , text = "𝕳𝖔𝖜 𝕸𝖆𝖓𝖞 𝕲𝖆𝖒𝖊𝖘?",font=("Helvetica",50),pady=50)
+games2Btn = Button(GameAmountScreen, text="2 𝕲𝖆𝖒𝖊𝖘",font=("Helvetica",25), command=btn_games_2)
+games4Btn = Button(GameAmountScreen, text="4 𝕲𝖆𝖒𝖊𝖘",font=("Helvetica",25),command=btn_games_4)
+games6Btn = Button(GameAmountScreen, text="6 𝕲𝖆𝖒𝖊𝖘",font=("Helvetica",25), command=btn_games_6)
+games8Btn = Button(GameAmountScreen, text="8 𝕲𝖆𝖒𝖊𝖘",font=("Helvetica",25), command=btn_games_8)
+
 title.pack()
 Instructions.pack()
-games2Btn.pack()
-games4Btn.pack()
-games6Btn.pack()
-games8Btn.pack()
-games10Btn.pack()
+numOfGames.pack()
+games2Btn.pack(side="left",padx=20)
+games4Btn.pack(side="left",padx=20)
+games6Btn.pack(side="right",padx=20)
+games8Btn.pack(side="right",padx=20)
+
+
 
 #Game Screen
-
 #gameboard
 GameScreen = Frame(root, width=700, height=700)
 gameboard = Label(GameScreen, bg= "Grey", height=42, width=40, borderwidth=8, relief="groove", )
@@ -116,21 +113,37 @@ minRange = -1
 maxRange = 4
 #Button Commands
 def btn_white():
-    global playerTurn, currentBox, currentAnswer, minRange, maxRange
-    if playerTurn % 2 == 0:
-        if currentAnswer > minRange and currentAnswer < maxRange:
-            answerBoardList[currentAnswer].config(bg="White")
-            currentAnswer += 1
-            return currentAnswer
+    global playerTurn, currentBox, currentAnswer, minRange, maxRange, games
+    if currentGame % 2 == 1:
+        if playerTurn % 2 == 0:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="White")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
-    else:
-        if currentBox > minRange and currentBox < maxRange:
-            gameboardList[currentBox].config(bg="White")
-            currentBox += 1
-            return currentBox
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="White")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
+    elif currentGame % 2 == 0:
+        if playerTurn % 2 == 1:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="White")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="White")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
 
 def btn_blue():
     global playerTurn, currentBox, currentAnswer, minRange, maxRange
@@ -231,13 +244,14 @@ def btn_delete():
 
 answerColors = []
 def btn_enter():
-    global playerTurn, currentBox, currentAnswer, minRange, maxRange
+    global playerTurn, currentBox, currentAnswer, minRange, maxRange, player1Score, player2Score, answerColors
     if playerTurn % 2 == 0:
         if currentAnswer == 4:
             for i in range(4):
                 answerColors.append(answerBoardList[i].cget("bg"))
             #print(answerColors)
             playerTurn += 1
+            updateInstructLabel()
         else:
             print("Not Enough Colors")
         cover.place(x=28,y=590)
@@ -245,10 +259,15 @@ def btn_enter():
         winCheck()
         minRange += 4
         maxRange += 4
+        player1Score += 1
+        updateScore()
+
+        
+        
 
 timesChecked = 0     
 def winCheck():
-    global timesChecked, minRange, maxRange, answerBoardList, gameboardList, answerColors
+    global timesChecked, minRange, maxRange, answerBoardList, gameboardList, answerColors, player1Score, player2Score
     totalCorrect = 0
     totalClose = 0
     if timesChecked == 0:
@@ -274,6 +293,10 @@ def winCheck():
         guessReturn[((timesChecked-1) * 4) + 1].config(bg="Red")
         guessReturn[((timesChecked-1) * 4) + 2].config(bg="Red")
         guessReturn[((timesChecked-1) * 4) + 3].config(bg="Red")
+        player1Score -= 1
+        updateScore()
+        resetBoard()
+
  
     elif totalCorrect == 3:
         guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
@@ -347,31 +370,70 @@ def winCheck():
 
 #keypad
 keyPad = Label(GameScreen , bg="grey",height=20 , width=40 , borderwidth = 5 , relief="groove")
-keyPad.place(x=400 , y=25)
+keyPad.place(x=400 , y=190)
 White = Button(GameScreen, bg= "White",height=6 , width=12, command=btn_white)
-White.place(x=405 ,y= 30)
+White.place(x=405 ,y= 30 + 165)
 Blue = Button(GameScreen, bg= "blue",height=6 , width=12, command=btn_blue)
-Blue.place(x=500 ,y= 30)
+Blue.place(x=500 ,y= 30+ 165)
 Purple = Button(GameScreen, bg= "purple",height=6 , width=12, command=btn_purple)
-Purple.place(x=595 ,y= 30)
+Purple.place(x=595 ,y= 30+ 165)
 Pink = Button(GameScreen, bg= "pink",height=6 , width=12, command=btn_pink)
-Pink.place(x=405 ,y= 130)
+Pink.place(x=405 ,y= 130+ 165)
 Orange = Button(GameScreen, bg= "Orange",height=6 , width=12, command=btn_orange)
-Orange.place(x=500 ,y= 130)
+Orange.place(x=500 ,y= 130+ 165)
 Orange = Button(GameScreen, bg= "Black",height=6 , width=12, command=btn_black)
-Orange.place(x=595,y= 130)
+Orange.place(x=595,y= 130+ 165)
 Enter = Button(GameScreen , bg="Green" , height = 5, width=10,text="Enter", command=btn_enter)
-Enter.place(x=460 , y=245)
+Enter.place(x=460 , y=245+ 165)
 Delete= Button(GameScreen, bg= "Red",height=5 , width=10 , text="Delete", command=btn_delete)
-Delete.place(x=560 ,y= 245)
+Delete.place(x=560 ,y= 245+ 165)
 
+#score
+scoreBoard = Label(GameScreen, bg="grey",height=8 , width=40 , borderwidth = 5 , relief="groove")
+scoreBoard.place(x=400 , y=540)
+player1Label = Label(GameScreen,text="Player 1 Score:", font=("comic Sans", 25),  bg="grey")
+player1Label.place(x=405 , y=465 + 80)
+player2Label = Label(GameScreen,text="Player 2 Score:",font=("comic Sans", 25), bg="grey")
+player2Label.place(x=405 , y=525 + 80)
+player1Scorelbl = Label(GameScreen,text=str(player1Score),font=("comic Sans", 25), bg="grey")
+player1Scorelbl.place(x=640 , y=465 + 80)
+player2Scorelbl = Label(GameScreen,text=str(player2Score),font=("comic Sans", 25), bg="grey")
+player2Scorelbl.place(x=640 , y=525 + 80)
 
+#instructions
+inGameinstructions = Label(GameScreen, bg="grey",height=8 , width=40 , borderwidth = 5 , relief="groove")
+inGameinstructions.place(x=400 , y=25)
+instructText = Label(GameScreen,bg = "grey", text=f"Player {playerTurn + 1} make \nyour code",font=("comic Sans", 30))
+instructText.place(x=415 , y=35)
 
+def updateScore():
+    global player1Score, player2Score
+    player1Scorelbl.config(text=str(player1Score))
+    player2Scorelbl.config(text=str(player2Score))
 
+def updateInstructLabel(): # fix this to be more accurate
+    global playerTurn
+    instructText.config(text=f"Player {playerTurn + 1} make \nyour guess")
 
-
-
-
+def resetBoard():
+    global playerTurn, currentBox, currentAnswer, minRange, maxRange, answerColors, timesChecked, currentGame, games
+    if currentGame +1 <= games:
+        currentGame += 1
+        for i in range(4):
+            answerBoardList[i].config(bg="Dark Grey")
+        for i in range(40):
+            gameboardList[i].config(bg="Dark Grey")
+        for i in range(40):
+            guessReturn[i].config(bg="Dark Grey")
+        answerColors = []
+        playerTurn = 0 # maybe fix this?
+        currentBox = 0
+        currentAnswer = 0
+        minRange = -1
+        maxRange = 4
+        timesChecked = 0
+        #updateInstructLabel()
+        cover.place_forget()
 
 
 
