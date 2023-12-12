@@ -16,7 +16,7 @@ currentGame = 1
 def btn_player_2():
     players = 2
     startScreen.pack_forget()
-    GameAmountScreen.pack()
+    GameAmountScreen.pack(fill="both", expand=True)
     return players
 
 
@@ -57,14 +57,14 @@ player2Btn.pack(pady=120)
   
 
 #Game Amount Screen
-GameAmountScreen = Frame(root)
-title = Label(GameAmountScreen, text="𝕴𝖓𝖘𝖙𝖗𝖚𝖈𝖙𝖎𝖔𝖓𝖘",font=("Helvetica",50))
-Instructions  = Label(GameAmountScreen, text="Have the player 1 select a code. Next , have the player 2 place there\n first guess. After each guess the computer will give them feedback.\nThe feedback the computer gives you is very important. It will\n either show a red , white or grey square for each box . Red meaning \nyou have a correct color in the correct spot. White meaning you\n have the correct color in the wrong box. And grey meaning you\n have the wrong color in the wrong spot. Keep in mind the feedack\n order does not corrilate with the game board order. Repeat with\n the next row.Continue until the code is guessed or there are no \nmore guesses left.Switch places and play again.\n Keep in mind there wil be no duplicates in this game.",font=("Helvetica",15))
-numOfGames = Label(GameAmountScreen , text = "𝕳𝖔𝖜 𝕸𝖆𝖓𝖞 𝕲𝖆𝖒𝖊𝖘?",font=("Helvetica",50),pady=50)
-games2Btn = Button(GameAmountScreen, text="2 𝕲𝖆𝖒𝖊𝖘",font=("Helvetica",25), command=btn_games_2)
-games4Btn = Button(GameAmountScreen, text="4 𝕲𝖆𝖒𝖊𝖘",font=("Helvetica",25),command=btn_games_4)
-games6Btn = Button(GameAmountScreen, text="6 𝕲𝖆𝖒𝖊𝖘",font=("Helvetica",25), command=btn_games_6)
-games8Btn = Button(GameAmountScreen, text="8 𝕲𝖆𝖒𝖊𝖘",font=("Helvetica",25), command=btn_games_8)
+GameAmountScreen = Frame(root,bg="light blue")
+title = Label(GameAmountScreen,bg="light blue", text="𝕴𝖓𝖘𝖙𝖗𝖚𝖈𝖙𝖎𝖔𝖓𝖘",font=("Helvetica",50))
+Instructions  = Label(GameAmountScreen,bg="light blue", text="Have the player 1 select a code. Next , have the player 2 place there\n first guess. After each guess the computer will give them feedback.\nThe feedback the computer gives you is very important. It will\n either show a red , white or grey square for each box . Red meaning \nyou have a correct color in the correct spot. White meaning you\n have the correct color in the wrong box. And grey meaning you\n have the wrong color in the wrong spot. Keep in mind the feedack\n order does not corrilate with the game board order. Repeat with\n the next row.Continue until the code is guessed or there are no \nmore guesses left.Switch places and play again.\n Keep in mind there wil be no duplicates in this game.",font=("Helvetica",15))
+numOfGames = Label(GameAmountScreen ,bg="light blue", text = "𝕳𝖔𝖜 𝕸𝖆𝖓𝖞 𝕲𝖆𝖒𝖊𝖘?",font=("Helvetica",50),pady=50)
+games2Btn = Button(GameAmountScreen, text="2 𝕲𝖆𝖒𝖊𝖘",bg="lime",font=("Helvetica",25), command=btn_games_2)
+games4Btn = Button(GameAmountScreen, text="4 𝕲𝖆𝖒𝖊𝖘",bg="lime",font=("Helvetica",25),command=btn_games_4)
+games6Btn = Button(GameAmountScreen, text="6 𝕲𝖆𝖒𝖊𝖘",bg="lime",font=("Helvetica",25), command=btn_games_6)
+games8Btn = Button(GameAmountScreen, text="8 𝕲𝖆𝖒𝖊𝖘",bg="lime",font=("Helvetica",25), command=btn_games_8)
 
 title.pack()
 Instructions.pack()
@@ -146,121 +146,229 @@ def btn_white():
                 print("Out of Range")
 
 def btn_blue():
-    global playerTurn, currentBox, currentAnswer, minRange, maxRange
-    if playerTurn % 2 == 0:
-        if currentAnswer > minRange and currentAnswer < maxRange:
-            answerBoardList[currentAnswer].config(bg="blue")
-            currentAnswer += 1
-            return currentAnswer
+    global playerTurn, currentBox, currentAnswer, minRange, maxRange, games
+    if currentGame % 2 == 1:
+        if playerTurn % 2 == 0:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="Blue")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
-    else:
-        if currentBox > minRange and currentBox < maxRange:
-            gameboardList[currentBox].config(bg="blue")
-            currentBox += 1
-            return currentBox
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="Blue")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
+    elif currentGame % 2 == 0:
+        if playerTurn % 2 == 1:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="Blue")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="Blue")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
 
 def btn_purple():
-    global playerTurn, currentBox, currentAnswer, minRange, maxRange
-    if playerTurn % 2 == 0:
-        if currentAnswer > minRange and currentAnswer < maxRange:
-            answerBoardList[currentAnswer].config(bg="purple")
-            currentAnswer += 1
-            return currentAnswer
+    global playerTurn, currentBox, currentAnswer, minRange, maxRange, games
+    if currentGame % 2 == 1:
+        if playerTurn % 2 == 0:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="Purple")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
-    else:
-        if currentBox > minRange and currentBox < maxRange:
-            gameboardList[currentBox].config(bg="purple")
-            currentBox += 1
-            return currentBox
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="Purple")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
+    elif currentGame % 2 == 0:
+        if playerTurn % 2 == 1:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="Purple")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="Purple")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
 
 def btn_pink():
-    global playerTurn, currentBox, currentAnswer, minRange, maxRange
-    if playerTurn % 2 == 0:
-        if currentAnswer > minRange and currentAnswer < maxRange:
-            answerBoardList[currentAnswer].config(bg="pink")
-            currentAnswer += 1
-            return currentAnswer
+    global playerTurn, currentBox, currentAnswer, minRange, maxRange, games
+    if currentGame % 2 == 1:
+        if playerTurn % 2 == 0:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="Pink")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
-    else:
-        if currentBox > minRange and currentBox < maxRange:
-            gameboardList[currentBox].config(bg="pink")
-            currentBox += 1
-            return currentBox
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="Pink")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
+    elif currentGame % 2 == 0:
+        if playerTurn % 2 == 1:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="Pink")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="Pink")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
 
 def btn_orange():
-    global playerTurn, currentBox, currentAnswer, minRange, maxRange
-    if playerTurn % 2 == 0:
-        if currentAnswer > minRange and currentAnswer < maxRange:
-            answerBoardList[currentAnswer].config(bg="orange")
-            currentAnswer += 1
-            return currentAnswer
+    global playerTurn, currentBox, currentAnswer, minRange, maxRange, games
+    if currentGame % 2 == 1:
+        if playerTurn % 2 == 0:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="Orange")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
-    else:
-        if currentBox > minRange and currentBox < maxRange:
-            gameboardList[currentBox].config(bg="orange")
-            currentBox += 1
-            return currentBox
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="Orange")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
+    elif currentGame % 2 == 0:
+        if playerTurn % 2 == 1:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="Orange")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="Orange")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
 
 def btn_black():
-    global playerTurn, currentBox, currentAnswer, minRange, maxRange
-    if playerTurn % 2 == 0:
-        if currentAnswer > minRange and currentAnswer < maxRange:
-            answerBoardList[currentAnswer].config(bg="black")
-            currentAnswer += 1
-            return currentAnswer
+    global playerTurn, currentBox, currentAnswer, minRange, maxRange, games
+    if currentGame % 2 == 1:
+        if playerTurn % 2 == 0:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="Black")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
-    else:
-        if currentBox > minRange and currentBox < maxRange:
-            gameboardList[currentBox].config(bg="black")
-            currentBox += 1
-            return currentBox
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="Black")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
+    elif currentGame % 2 == 0:
+        if playerTurn % 2 == 1:
+            if currentAnswer > minRange and currentAnswer < maxRange:
+                answerBoardList[currentAnswer].config(bg="Black")
+                currentAnswer += 1
+                return currentAnswer
+            else:
+                print("Out of Range")
         else:
-            print("Out of Range")
+            if currentBox > minRange and currentBox < maxRange:
+                gameboardList[currentBox].config(bg="Black")
+                currentBox += 1
+                return currentBox
+            else:
+                print("Out of Range")
 
 
 def btn_delete():
     global playerTurn, currentBox, currentAnswer, minRange, maxRange
-    if playerTurn % 2 == 0:
-        if currentAnswer > 0 and currentAnswer-1 > minRange and currentAnswer-1 < maxRange:
-            currentAnswer -= 1
-            answerBoardList[currentAnswer].config(bg="Dark Grey")
-    else:
-        if currentBox > 0 and currentBox-1 > minRange and currentBox-1 < maxRange:
-            currentBox -= 1
-            gameboardList[currentBox].config(bg="Dark Grey")
+    if currentGame % 2 == 1:
+        if playerTurn % 2 == 0:
+            if currentAnswer > 0 and currentAnswer-1 > minRange and currentAnswer-1 < maxRange:
+                currentAnswer -= 1
+                answerBoardList[currentAnswer].config(bg="Dark Grey")
+        else:
+            if currentBox > 0 and currentBox-1 > minRange and currentBox-1 < maxRange:
+                currentBox -= 1
+                gameboardList[currentBox].config(bg="Dark Grey")
+    elif currentGame % 2 == 0:
+        if playerTurn % 2 == 1:
+            if currentAnswer > 0 and currentAnswer-1 > minRange and currentAnswer-1 < maxRange:
+                currentAnswer -= 1
+                answerBoardList[currentAnswer].config(bg="Dark Grey")
+        else:
+            if currentBox > 0 and currentBox-1 > minRange and currentBox-1 < maxRange:
+                currentBox -= 1
+                gameboardList[currentBox].config(bg="Dark Grey")
 
 answerColors = []
 def btn_enter():
     global playerTurn, currentBox, currentAnswer, minRange, maxRange, player1Score, player2Score, answerColors
-    if playerTurn % 2 == 0:
-        if currentAnswer == 4:
-            for i in range(4):
-                answerColors.append(answerBoardList[i].cget("bg"))
-            #print(answerColors)
-            playerTurn += 1
-            updateInstructLabel()
+    if currentGame % 2 == 1:
+        if playerTurn % 2 == 0:
+            if currentAnswer == 4:
+                for i in range(4):
+                    answerColors.append(answerBoardList[i].cget("bg"))
+                #print(answerColors)
+                playerTurn += 1
+                updateInstructLabel()
+            else:
+                print("Not Enough Colors")
+            cover.place(x=28,y=590)
         else:
-            print("Not Enough Colors")
-        cover.place(x=28,y=590)
-    else:
-        winCheck()
-        minRange += 4
-        maxRange += 4
-        player1Score += 1
-        updateScore()
+            winCheck()
+            minRange += 4
+            maxRange += 4
+            player1Score += 1
+            updateScore()
+    elif currentGame % 2 == 0:
+        if playerTurn % 2 == 1:
+            if currentAnswer == 4:
+                for i in range(4):
+                    answerColors.append(answerBoardList[i].cget("bg"))
+                #print(answerColors)
+                playerTurn += 1
+                updateInstructLabel()
+            else:
+                print("Not Enough Colors")
+            cover.place(x=28,y=590)
+        else:
+            winCheck()
+            minRange += 4
+            maxRange += 4
+            player2Score += 1
+            updateScore()
 
         
         
@@ -293,7 +401,6 @@ def winCheck():
         guessReturn[((timesChecked-1) * 4) + 1].config(bg="Red")
         guessReturn[((timesChecked-1) * 4) + 2].config(bg="Red")
         guessReturn[((timesChecked-1) * 4) + 3].config(bg="Red")
-        player1Score -= 1
         updateScore()
         resetBoard()
 
@@ -302,7 +409,7 @@ def winCheck():
         guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
         guessReturn[((timesChecked-1) * 4) + 1].config(bg="Red")
         guessReturn[((timesChecked-1) * 4) + 2].config(bg="Red")
-        guessReturn[((timesChecked-1) * 4) + 3].config(bg="White")
+        guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
     elif totalCorrect == 2:
         if totalClose == 2:
             guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
@@ -412,8 +519,11 @@ def updateScore():
     player2Scorelbl.config(text=str(player2Score))
 
 def updateInstructLabel(): # fix this to be more accurate
-    global playerTurn
-    instructText.config(text=f"Player {playerTurn + 1} make \nyour guess")
+    global playerTurn, currentGame, games
+    if currentGame % 2 == 1:
+        instructText.config(text=f"Player {playerTurn + 1} make \nyour guess")
+    elif currentGame % 2 == 0:
+        instructText.config(text=f"Player {playerTurn - 1} make \nyour guess")
 
 def resetBoard():
     global playerTurn, currentBox, currentAnswer, minRange, maxRange, answerColors, timesChecked, currentGame, games
@@ -426,14 +536,25 @@ def resetBoard():
         for i in range(40):
             guessReturn[i].config(bg="Dark Grey")
         answerColors = []
-        playerTurn = 0 # maybe fix this?
+        #playerTurn = 0 # maybe fix this?
         currentBox = 0
         currentAnswer = 0
-        minRange = -1
-        maxRange = 4
+        minRange = -5
+        maxRange = 0
         timesChecked = 0
         #updateInstructLabel()
         cover.place_forget()
+        instructText.config(text=f"Player {playerTurn + 1} make \nyour code")
+
+    else:
+        if player1Score > player2Score:
+            instructText.config(text=f"Game Over\n Player 1 wins")
+        elif player2Score > player1Score:
+            instructText.config(text=f"Game Over\n Player 2 wins")
+        else:
+            instructText.config(text=f"Game Over\n Its a tie")
+        
+
 
 
 
