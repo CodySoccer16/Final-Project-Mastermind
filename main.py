@@ -59,7 +59,7 @@ player2Btn.pack(pady=120)
 #Game Amount Screen
 GameAmountScreen = Frame(root,bg="light blue")
 title = Label(GameAmountScreen,bg="light blue", text="𝕴𝖓𝖘𝖙𝖗𝖚𝖈𝖙𝖎𝖔𝖓𝖘",font=("Helvetica",50))
-Instructions  = Label(GameAmountScreen,bg="light blue", text="Have the player 1 select a code. Next , have the player 2 place there\n first guess. After each guess the computer will give them feedback.\nThe feedback the computer gives you is very important. It will\n either show a red , white or grey square for each box . Red meaning \nyou have a correct color in the correct spot. White meaning you\n have the correct color in the wrong box. And grey meaning you\n have the wrong color in the wrong spot. Keep in mind the feedack\n order does not corrilate with the game board order. Repeat with\n the next row.Continue until the code is guessed or there are no \nmore guesses left.Switch places and play again.\n Keep in mind there wil be no duplicates in this game.",font=("Helvetica",15))
+Instructions  = Label(GameAmountScreen,bg="light blue", text="Have the player 1 select a code. Next , have the player 2 place there\n first guess. After each guess the computer will give them feedback.\nThe feedback the computer gives you is very important. It will\n either show a red , white or grey square for each box . Red meaning \nyou have a correct color in the correct spot. White meaning you\n have the correct color in the wrong box. And grey meaning you\n have the wrong color in the wrong spot. Keep in mind the feedack\n order does not corrilate with the game board order. Repeat with\n the next row.Continue until the code is guessed or there are no \nmore guesses left.Switch places and play again. The code maker recieves \n 1 point for every guess and 1 bonus point if it cant be guessed in the \n10 guesses. Keep in mind there wil be no duplicates in this game.",font=("Helvetica",15))
 numOfGames = Label(GameAmountScreen ,bg="light blue", text = "𝕳𝖔𝖜 𝕸𝖆𝖓𝖞 𝕲𝖆𝖒𝖊𝖘?",font=("Helvetica",50),pady=50)
 games2Btn = Button(GameAmountScreen, text="2 𝕲𝖆𝖒𝖊𝖘",bg="lime",font=("Helvetica",25), command=btn_games_2)
 games4Btn = Button(GameAmountScreen, text="4 𝕲𝖆𝖒𝖊𝖘",bg="lime",font=("Helvetica",25),command=btn_games_4)
@@ -71,8 +71,10 @@ Instructions.pack()
 numOfGames.pack()
 games2Btn.pack(side="left",padx=20)
 games4Btn.pack(side="left",padx=20)
-games6Btn.pack(side="right",padx=20)
-games8Btn.pack(side="right",padx=20)
+games6Btn.pack(side="left",padx=20)
+games8Btn.pack(side="left",padx=20)
+
+
 
 
 
@@ -334,41 +336,55 @@ def btn_delete():
 
 answerColors = []
 def btn_enter():
-    global playerTurn, currentBox, currentAnswer, minRange, maxRange, player1Score, player2Score, answerColors
+    global playerTurn, currentBox, currentAnswer, minRange, maxRange, player1Score, player2Score, answerColors, timesChecked
     if currentGame % 2 == 1:
         if playerTurn % 2 == 0:
             if currentAnswer == 4:
                 for i in range(4):
-                    answerColors.append(answerBoardList[i].cget("bg"))
+                    if answerBoardList[i].cget("bg") in answerColors:
+                        print("No duplicates")
+                    else:
+                        answerColors.append(answerBoardList[i].cget("bg"))
                 #print(answerColors)
-                playerTurn += 1
-                updateInstructLabel()
+                if len(answerColors) == 4:
+                    playerTurn += 1
+                    updateInstructLabel()
+                    cover.place(x=28,y=590)
             else:
                 print("Not Enough Colors")
-            cover.place(x=28,y=590)
+            
         else:
-            winCheck()
-            minRange += 4
-            maxRange += 4
-            player1Score += 1
-            updateScore()
+            if currentBox % 4 == 0 and currentBox != 0 and ((currentBox / 4) > timesChecked):
+                winCheck()
+                minRange += 4
+                maxRange += 4
+                player1Score += 1
+                updateScore()
+            else:
+                print("Not Enough Colors")
     elif currentGame % 2 == 0:
         if playerTurn % 2 == 1:
             if currentAnswer == 4:
                 for i in range(4):
-                    answerColors.append(answerBoardList[i].cget("bg"))
-                #print(answerColors)
-                playerTurn += 1
-                updateInstructLabel()
+                    if answerBoardList[i].cget("bg") in answerColors:
+                        print("No duplicates")
+                    else:
+                        answerColors.append(answerBoardList[i].cget("bg"))
+                if len(answerColors) == 4:
+                    playerTurn += 1
+                    updateInstructLabel()
+                    cover.place(x=28,y=590)
             else:
                 print("Not Enough Colors")
-            cover.place(x=28,y=590)
         else:
-            winCheck()
-            minRange += 4
-            maxRange += 4
-            player2Score += 1
-            updateScore()
+            if currentBox % 4 == 0 and currentBox != 0 and ((currentBox / 4) > timesChecked):
+                winCheck()
+                minRange += 4
+                maxRange += 4
+                player2Score += 1
+                updateScore()
+            else:
+                print("Not Enough Colors")
 
         
         
@@ -386,7 +402,7 @@ def winCheck():
                 if gameboardList[i].cget("bg") in answerColors:
                         totalClose += 1
         timesChecked += 1
-    else:
+    elif timesChecked > 0 and timesChecked < 10:
         for i in range(minRange+1, maxRange):
             #print(gameboardList[i].cget("bg"), answerBoardList[i - (4 * timesChecked)].cget("bg"))
             if gameboardList[i].cget("bg") == answerBoardList[i - (4 * timesChecked)].cget("bg"):
@@ -395,7 +411,7 @@ def winCheck():
                 if gameboardList[i].cget("bg") in answerColors:
                         totalClose += 1
         timesChecked += 1
-
+        
     if totalCorrect == 4:
         guessReturn[((timesChecked-1) * 4) + 0].config(bg="Red")
         guessReturn[((timesChecked-1) * 4) + 1].config(bg="Red")
@@ -474,6 +490,14 @@ def winCheck():
             guessReturn[((timesChecked-1) * 4) + 2].config(bg="Dark Grey")
             guessReturn[((timesChecked-1) * 4) + 3].config(bg="Dark Grey")
 
+    if timesChecked == 10:
+        if playerTurn % 2 == 0:
+            player2Score += 1
+            updateScore()
+        else:
+            player1Score += 1
+            updateScore()
+        resetBoard()
 
 #keypad
 keyPad = Label(GameScreen , bg="grey",height=20 , width=40 , borderwidth = 5 , relief="groove")
@@ -510,7 +534,7 @@ player2Scorelbl.place(x=640 , y=525 + 80)
 #instructions
 inGameinstructions = Label(GameScreen, bg="grey",height=8 , width=40 , borderwidth = 5 , relief="groove")
 inGameinstructions.place(x=400 , y=25)
-instructText = Label(GameScreen,bg = "grey", text=f"Player {playerTurn + 1} make \nyour code",font=("comic Sans", 30))
+instructText = Label(GameScreen,bg = "grey", text=f"Player 1 make \nyour code",font=("comic Sans", 30))
 instructText.place(x=415 , y=35)
 
 def updateScore():
@@ -521,9 +545,9 @@ def updateScore():
 def updateInstructLabel(): # fix this to be more accurate
     global playerTurn, currentGame, games
     if currentGame % 2 == 1:
-        instructText.config(text=f"Player {playerTurn + 1} make \nyour guess")
+        instructText.config(text=f"Player 2 make \nyour guess")
     elif currentGame % 2 == 0:
-        instructText.config(text=f"Player {playerTurn - 1} make \nyour guess")
+        instructText.config(text=f"Player 1 make \nyour guess")
 
 def resetBoard():
     global playerTurn, currentBox, currentAnswer, minRange, maxRange, answerColors, timesChecked, currentGame, games
@@ -544,14 +568,19 @@ def resetBoard():
         timesChecked = 0
         #updateInstructLabel()
         cover.place_forget()
-        instructText.config(text=f"Player {playerTurn + 1} make \nyour code")
+        if currentGame % 2 == 1:
+            print(currentGame)
+            instructText.config(text=f"Player 1 make \nyour code")
+        elif currentGame % 2 == 0:
+            instructText.config(text=f"Player 2 make \nyour code")
 
     else:
-        if player1Score > player2Score:
+        print(player1Score, player2Score)
+        if int(player1Score) > int(player2Score + 1):
             instructText.config(text=f"Game Over\n Player 1 wins")
-        elif player2Score > player1Score:
+        elif int(player2Score) > (player1Score + 1):
             instructText.config(text=f"Game Over\n Player 2 wins")
-        else:
+        elif int(player1Score) == int(player2Score + 1):
             instructText.config(text=f"Game Over\n Its a tie")
         
 
